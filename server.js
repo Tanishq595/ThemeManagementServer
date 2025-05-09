@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// MongoDB connection with optimized settings for serverless
+// MongoDB connection
 const connectDB = async () => {
   try {
     await mongoose.connect('mongodb+srv://tanishqagarwal595:tanishq595@cluster0.skrcz2y.mongodb.net/myDatabase?retryWrites=true&w=majority&appName=Cluster0', {
@@ -21,13 +21,17 @@ const connectDB = async () => {
   }
 };
 
-// Initialize connection
 connectDB();
 
 const DataSchema = new mongoose.Schema({}, { strict: false });
 const DataModel = mongoose.model('Data', DataSchema);
 
-// API Routes with proper error handling
+// Root route
+app.get('/', (req, res) => {
+  res.send('Theme Management Backend is running');
+});
+
+// API Routes
 app.get('/api/data', async (req, res) => {
   try {
     const data = await DataModel.find();
@@ -59,5 +63,4 @@ app.delete('/api/data/:name', async (req, res) => {
   }
 });
 
-// Vercel-specific export (required)
 module.exports = app;
